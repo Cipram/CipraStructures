@@ -3,6 +3,7 @@ package TDAArbol;
 import java.util.Iterator;
 
 import Exceptions.BoundaryViolationException;
+import Exceptions.EmptyListException;
 import Exceptions.InvalidOperationException;
 import Exceptions.InvalidPositionException;
 import TDALista.*;
@@ -26,7 +27,6 @@ public class ArbolGen<E> implements Tree<E> {
 		return size == 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<E> iterator() {
 		PositionList<E> l = new ListaDE<E>();
@@ -142,19 +142,64 @@ public class ArbolGen<E> implements Tree<E> {
 
 	@Override
 	public void removeExternalNode(Position<E> p) throws InvalidPositionException {
-		
+		TNodo<E> nodo = checkPosition(p);
+		if (isInternal(nodo))
+			throw new InvalidPositionException("La posicion no es una hoja");
+		removeNode(nodo);
 	}
 
 	@Override
 	public void removeInternalNode(Position<E> p) throws InvalidPositionException {
-		// TODO Auto-generated method stub
-		
+		TNodo<E> nodo = checkPosition(p);
+		if (isExternal(nodo))
+			throw new InvalidPositionException("La posicion es una hoja");
+		removeNode(nodo);
 	}
 
 	@Override
 	public void removeNode(Position<E> p) throws InvalidPositionException {
-		// TODO Auto-generated method stub
-		
+		if ( size == 0)
+			throw new InvalidPositionException("no se ... ");
+		try{
+			TNodo<E> n = checkPosition(p);
+			if ( n == raiz ){
+				if ( n.getHijos().size() == 1 ){
+					Position<TNodo<E>> nuevaRaiz = n.getHijos().first();
+					raiz = nuevaRaiz.element();
+					raiz.setPadre(null);
+					size--;
+				}
+				else{
+					if  ( size == 1 ){
+						raiz = null;
+						size--;
+					}
+					else{
+						throw new InvalidPositionException("No se puede eliminar ...");
+					}
+				}
+			}
+			else{
+				TNodo<E> padre = n.getPadre();
+				PositionList<TNodo<E>> hijosN = n.getHijos();
+				PositionList<TNodo<E>> hijosPadre = padre.getHijos();
+				Position<TNodo<E>> primero = hijosPadre.first(); 
+				
+				while( primero.element() != n ) //se busca la posicion de 
+					primero = hijosPadre.next(primero);
+				
+				while ( !hijosN.isEmpty() ){
+					Position<TNodo<E>> hijoInsertar = hijosN.first();
+					hijosPadre.addBefore(primero, hijoInsertar.element()); 	//se mete los hijos de n como hijos de padre
+					hijoInsertar.element().setPadre(padre);					//se cambia el padre de los hijos de n 
+					hijosN.remove(hijoInsertar);  							// se sca los hijos que quedaron como hijos de n
+				}
+				hijosPadre.remove(primero); 								//  se eliminar definitivamente el n
+				size--;
+			}
+		} catch (EmptyListException | BoundaryViolationException e){ //
+			throw new InvalidPositionException("");
+		}		
 	}
 	
 	private TNodo<E> checkPosition(Position<E> v) throws InvalidPositionException {
