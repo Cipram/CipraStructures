@@ -386,7 +386,7 @@ public class ArbolTest {
 		// chequearHijosNiveles();
 		Position<Integer> p;
 		int i = 1;
-		Queue<Position<Integer>> cola = new ArrayQueue<Position<Integer>>();
+		Queue<Position<Integer>> cola = new ColaEnlazada<Position<Integer>>();
 		try {
 			p = T.root();
 		} catch (EmptyTreeException e1) {
@@ -438,7 +438,7 @@ public class ArbolTest {
 		cargarArbol(T);
 		Position<Integer> p;
 		Iterator<Position<Integer>> hijos = null;
-		Queue<Position<Integer>> cola = new ArrayQueue<Position<Integer>>();
+		Queue<Position<Integer>> cola = new ColaEnlazada<Position<Integer>>();
 		// Posici�n inv�lida
 		try {
 			T.isExternal(null);
@@ -501,7 +501,7 @@ public class ArbolTest {
 		cargarArbol(T);
 		Position<Integer> p = null;
 		Iterator<Position<Integer>> hijos = null;
-		Queue<Position<Integer>> cola = new ArrayQueue<Position<Integer>>();
+		Queue<Position<Integer>> cola = new ColaEnlazada<Position<Integer>>();
 		try {
 			T.isRoot(null);
 			fail("isRoot deber�a lanzar la excepci�n InvalidPositionException con una posici�n inv�lida");
@@ -809,13 +809,13 @@ public class ArbolTest {
 			T.addBefore(h1, h2, 5);
 			chequearPadre(T.root());
 			// caso de prueba para los hijos de root
-			hijosRoot = new DoubleLinkedList<Integer>();
+			hijosRoot = new ListaDE<Integer>();
 			hijosRoot.addFirst(2);
 			hijosRoot.addFirst(7);
 			hijosRoot.addFirst(3);
 			hijosRoot.addFirst(6);
 			hijosRoot.addFirst(9);
-			hijos = new DoubleLinkedList<Integer>();
+			hijos = new ListaDE<Integer>();
 			for (Position<Integer> n : T.children(T.root())) {
 				hijos.addLast(n.element());
 			}
@@ -829,10 +829,10 @@ public class ArbolTest {
 
 			}
 			// caso de prueba para los hijos de h1
-			hijosH1 = new DoubleLinkedList<Integer>();
+			hijosH1 = new ListaDE<Integer>();
 			hijosH1.addFirst(4);
 			hijosH1.addFirst(5);
-			hjsH1 = new DoubleLinkedList<Integer>();
+			hjsH1 = new ListaDE<Integer>();
 			for (Position<Integer> n : T.children(h1)) {
 				hjsH1.addLast(n.element());
 			}
@@ -930,13 +930,13 @@ public class ArbolTest {
 			T.addAfter(h1, h2, 5);
 			chequearPadre(T.root());
 			// caso de prueba para los hijos de root
-			PositionList<Integer> hijosRoot = new DoubleLinkedList<Integer>();
+			PositionList<Integer> hijosRoot = new ListaDE<Integer>();
 			hijosRoot.addFirst(2);
 			hijosRoot.addFirst(7);
 			hijosRoot.addFirst(3);
 			hijosRoot.addFirst(6);
 			hijosRoot.addFirst(9);
-			PositionList<Integer> hijos = new DoubleLinkedList<Integer>();
+			PositionList<Integer> hijos = new ListaDE<Integer>();
 			for (Position<Integer> n : T.children(T.root())) {
 				hijos.addFirst(n.element());
 			}
@@ -950,10 +950,10 @@ public class ArbolTest {
 
 			}
 			// caso de prueba para los hijos de h1
-			hijosH1 = new DoubleLinkedList<Integer>();
+			hijosH1 = new ListaDE<Integer>();
 			hijosH1.addFirst(5);
 			hijosH1.addFirst(4);
-			hjsH1 = new DoubleLinkedList<Integer>();
+			hjsH1 = new ListaDE<Integer>();
 			for (Position<Integer> n : T.children(h1)) {
 				hjsH1.addLast(n.element());
 			}
@@ -1139,7 +1139,7 @@ public class ArbolTest {
 				fail("children() no deber�a lanzar la excepci�n InvalidPositionException para una posici�n v�lida.");
 		}
 		// Intento eliminar nodos internos.
-		lista = new DoubleLinkedList<Integer>();
+		lista = new ListaDE<Integer>();
 		for (i = 1; i <= 12; i++)
 			lista.addLast(i);
 		chequearHijosNiveles2(lista);
@@ -1150,7 +1150,7 @@ public class ArbolTest {
 				pos = it.next();
 			T.removeInternalNode(pos);
 			chequearPadre(T.root());
-			lista = new DoubleLinkedList<Integer>();
+			lista = new ListaDE<Integer>();
 			for (i = 1; i <= 4; i++)
 				lista.addLast(i);
 			p1 = lista.last();
@@ -1196,7 +1196,7 @@ public class ArbolTest {
 					.equals(3));
 			T.removeInternalNode(pos);
 			chequearPadre(T.root());
-			lista = new DoubleLinkedList<Integer>();
+			lista = new ListaDE<Integer>();
 			lista.addLast(1);
 			lista.addLast(6);
 			lista.addLast(7);
@@ -1264,7 +1264,7 @@ public class ArbolTest {
 
 		T = getTree();
 		cargarArbol2(T);
-		lista = new DoubleLinkedList<Position<Integer>>();
+		lista = new ListaDE<Position<Integer>>();
 		try {
 			nodosEnNivel(T.root(), 1, 1, lista);
 			it = lista.iterator();
@@ -1290,7 +1290,7 @@ public class ArbolTest {
 		}
 		// Elimino todos los nodos del nivel 1
 		try {
-			lista = new DoubleLinkedList<Position<Integer>>();
+			lista = new ListaDE<Position<Integer>>();
 			nodosEnNivel(T.root(), 1, 1, lista);
 			it = lista.iterator();
 			while (it.hasNext())
@@ -1314,7 +1314,7 @@ public class ArbolTest {
 		}
 
 		try {
-			lista = new DoubleLinkedList<Position<Integer>>();
+			lista = new ListaDE<Position<Integer>>();
 			nodosEnNivel(T.root(), 1, 1, lista);
 			it = lista.iterator();
 			while (it.hasNext())
@@ -1449,7 +1449,7 @@ public class ArbolTest {
 		Position<Integer> p;
 		int el = 0;
 		Iterator<Integer> it = lista.iterator();
-		Queue<Position<Integer>> cola = new ArrayQueue<Position<Integer>>();
+		Queue<Position<Integer>> cola = new ColaEnlazada<Position<Integer>>();
 		Iterator<Position<Integer>> hijos = null;
 		try {
 			p = T.root();

@@ -19,7 +19,7 @@ public class QueueTest {
 
 	private Queue<String> getQueue()
 	{
-	  return new ArrayQueue<String>(50);
+	  return new ColaEnlazada<String>();
 	 }
 	
 	@Before public void setUp()
@@ -97,8 +97,7 @@ public class QueueTest {
 		}
 	  
 /*_______________________TESTEAMOS EL METODO enqueue() y dequeue()_____________________________*/
-	  @SuppressWarnings("removal")
-	@Test public void enqueueDequeue()
+	  @Test public void enqueueDequeue()
   {
 	  c.enqueue(n1);
 	  c.enqueue(n2);
