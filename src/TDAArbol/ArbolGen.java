@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import Exceptions.BoundaryViolationException;
 import Exceptions.EmptyListException;
+import Exceptions.EmptyStackException;
 import Exceptions.InvalidOperationException;
 import Exceptions.InvalidPositionException;
 import TDALista.*;
@@ -39,15 +40,18 @@ public class ArbolGen<E> implements Tree<E> {
 	@Override
 	public Iterable<Position<E>> positions() {
 		PositionList<Position<E>> l = new ListaDE<Position<E>>();
-		pre(raiz,l);
+		if (!isEmpty())
+			pre(raiz,l);
 		return l;
 	}
 	
 	private void pre(TNodo<E> n, PositionList<Position<E>> l) {
 		l.addLast(n);
-		for (TNodo<E> p : n.getHijos()) {
-			pre(p,l);
-		}
+		if (!n.getHijos().isEmpty())
+			for (TNodo<E> p : n.getHijos()) {
+				if (p != null)
+					pre(p,l);
+			}
 	}
 	
 	
@@ -61,36 +65,57 @@ public class ArbolGen<E> implements Tree<E> {
 	public Position<E> root() throws EmptyTreeException {
 		if (isEmpty())
 			throw new EmptyTreeException("El arbol esta vacio");
-		return null;
+		return raiz;
 	}
 
 	@Override
 	public Position<E> parent(Position<E> v) throws InvalidPositionException, BoundaryViolationException {
 		TNodo<E> ret = checkPosition(v);
-		if (v == raiz)
+		if (isRoot(ret))
 			throw new BoundaryViolationException("");
 		return ret.getPadre();
 	}
 
 	@Override
 	public Iterable<Position<E>> children(Position<E> v) throws InvalidPositionException {
+		if (isEmpty())
+			throw new InvalidPositionException("El arbol esta vacio");
 		TNodo<E> ret = checkPosition(v);
-		PositionList<Position<E>> aux = new ListaDE<Position<E>>();
+		PositionList<Position<E>> hijos = new ListaDE<Position<E>>();
 		for (Position<TNodo<E>> p : ret.getHijos().positions())
-			aux.addLast(p.element());
-		return aux;
+			hijos.addLast(p.element());
+		return hijos;
 	}
 
 	@Override
 	public boolean isInternal(Position<E> v) throws InvalidPositionException {
-		TNodo<E> nodo = checkPosition( v );
-		return !nodo.getHijos().isEmpty();
+		TNodo<E> nodo = checkPosition(v);
+		boolean es = false;
+			if (nodo.getPadre() != null) {
+				checkFather(nodo);
+				es = !nodo.getHijos().isEmpty();
+			}
+			else {
+				if (isRoot(nodo))
+					es = !nodo.getHijos().isEmpty();
+			}
+		return es;
 	}
 
 	@Override
 	public boolean isExternal(Position<E> v) throws InvalidPositionException {
-		TNodo<E> nodo = checkPosition( v );
-		return nodo.getHijos().isEmpty();
+		TNodo<E> nodo = checkPosition(v);
+		boolean es = false;
+		if (isRoot(nodo)) {
+			es = nodo.getHijos().isEmpty();
+		}
+		else{
+			if (nodo.getHijos().isEmpty()) {
+				checkFather(nodo);
+				es = true;
+			}
+		}
+		return es;
 	}
 
 	@Override
@@ -104,65 +129,210 @@ public class ArbolGen<E> implements Tree<E> {
 		if (raiz != null)
 			throw new InvalidOperationException("El arbol ya tiene raiz");
 		raiz = new TNodo<E>(e);
+		raiz.setPadre(null);
+		size++;
 	}
 
 	@Override
 	public Position<E> addFirstChild(Position<E> p, E e) throws InvalidPositionException {
+		if (isEmpty())
+			throw new InvalidPositionException("El arbol esta vacio");
 		TNodo<E> n = checkPosition(p);
 		TNodo<E> ret = new TNodo<E>(e);
+		ret.setPadre(n);
 		n.getHijos().addFirst(ret);
+		size++;
 		return ret;
 	}
 
 	@Override
 	public Position<E> addLastChild(Position<E> p, E e) throws InvalidPositionException {
+		if (isEmpty())
+			throw new InvalidPositionException("El arbol esta vacio");
 		TNodo<E> n = checkPosition(p);
 		TNodo<E> ret = new TNodo<E>(e);
+		ret.setPadre(n);
 		n.getHijos().addLast(ret);
+		size++;
 		return ret;
 	}
 
 	@Override
 	public Position<E> addBefore(Position<E> p, Position<E> rb, E e) throws InvalidPositionException {
 		TNodo<E> padre = checkPosition(p);
-		TNodo<E> hermano = checkPosition(p);
+		TNodo<E> hermano = checkPosition(rb);
 		TNodo<E> ret = new TNodo<E>(e);
-		padre.getHijos().addBefore(new TNodo<TNodo<E>>( hermano ), ret);
+		if (isEmpty())
+			throw new InvalidPositionException("El arbol esta vacio");
+		if (hermano.getPadre() != padre)
+			throw new InvalidPositionException("");
+		try {
+			PositionList<TNodo<E>> hijos = padre.getHijos();
+			Position<TNodo<E>> cursor = hijos.first();
+			boolean esta = false;
+			while (!esta  && cursor != null) {
+				if (cursor.element() == hermano) {
+					esta = true;
+				}
+				else {
+					if (cursor == hijos.last()) {
+						cursor = null;
+					}
+					else {
+						cursor = hijos.next(cursor);
+					}
+				}
+						
+			}
+			if (!esta)
+				throw new InvalidPositionException("La posicion no se encuentra en el arbol");
+			ret.setPadre(padre);
+			hijos.addBefore(cursor, ret);
+		} catch (EmptyListException | BoundaryViolationException e1) {
+			System.out.println(e1.getMessage());
+		}
+		size++;
 		return ret;
 	}
 
 	@Override
 	public Position<E> addAfter(Position<E> p, Position<E> lb, E e) throws InvalidPositionException {
 		TNodo<E> padre = checkPosition(p);
-		TNodo<E> hermano = checkPosition(p);
+		TNodo<E> hermano = checkPosition(lb);
 		TNodo<E> ret = new TNodo<E>(e);
-		padre.getHijos().addAfter(new TNodo<TNodo<E>>( hermano ), ret);
+		if (isEmpty())
+			throw new InvalidPositionException("El arbol esta vacio");
+		if (hermano.getPadre() != padre)
+			throw new InvalidPositionException("");
+		try {
+			PositionList<TNodo<E>> hijos = padre.getHijos();
+			Position<TNodo<E>> cursor = hijos.first();
+			boolean esta = false;
+			while (!esta  && cursor != null) {
+				if (cursor.element() == hermano) {
+					esta = true;
+				}
+				else {
+					if (cursor == hijos.last()) {
+						cursor = null;
+					}
+					else {
+						cursor = hijos.next(cursor);
+					}
+				}
+						
+			}
+			if (!esta)
+				throw new InvalidPositionException("La posicion no se encuentra en el arbol");
+			ret.setPadre(padre);
+			hijos.addAfter(cursor, ret);
+		} catch (EmptyListException | BoundaryViolationException e1) {
+			System.out.println(e1.getMessage());
+		}
+		size++;
 		return ret;
 	}
 
 	@Override
 	public void removeExternalNode(Position<E> p) throws InvalidPositionException {
+		if (isEmpty())
+			throw new InvalidPositionException("");
 		TNodo<E> nodo = checkPosition(p);
-		if (isInternal(nodo))
+		if (!isExternal(nodo))
 			throw new InvalidPositionException("La posicion no es una hoja");
-		removeNode(nodo);
+		try {
+			if (nodo.getPadre() != null) {
+				TNodo<E> padre = nodo.padre;
+				PositionList<TNodo<E>> hermanos = padre.getHijos();
+				Position<TNodo<E>> cursor = hermanos.first();
+				boolean esta = false;
+				while (!esta && cursor != null) {
+					if (cursor.element() == nodo)
+						esta = true;
+					else {
+						if (cursor == hermanos.last()) {
+							cursor = null;
+						}
+						else {
+							cursor = hermanos.next(cursor);
+						}	
+					}
+				}
+				if (!esta)
+					throw new InvalidPositionException("");
+				hermanos.remove(cursor);
+				size--;
+			}
+			else {
+				if (isRoot(nodo)) {
+					raiz = null;
+					size--;
+				} 
+				
+			}
+		} catch (EmptyListException | BoundaryViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void removeInternalNode(Position<E> p) throws InvalidPositionException {
+		if (isEmpty())
+			throw new InvalidPositionException("");
 		TNodo<E> nodo = checkPosition(p);
-		if (isExternal(nodo))
+		if (!isInternal(nodo))
 			throw new InvalidPositionException("La posicion es una hoja");
-		removeNode(nodo);
+		try {
+			if (nodo.getPadre() != null) {
+				TNodo<E> padre = nodo.getPadre();
+				PositionList<TNodo<E>> hermanosN = padre.getHijos();
+				PositionList<TNodo<E>> hijosN = nodo.getHijos();
+				Position<TNodo<E>> cursor;
+				cursor = hermanosN.first();
+				while (cursor != nodo) {
+					cursor = hermanosN.next(cursor);
+				}
+				while (!hijosN.isEmpty()) {
+					Position<TNodo<E>> hijo = hijosN.first();
+					hijo.element().setPadre(padre);
+					hermanosN.addBefore(cursor, hijo.element());
+					hijosN.remove(hijo);
+				}
+				hermanosN.remove(cursor);
+				size--;
+			}
+			else {
+				if (isRoot(nodo)){
+					if ( nodo.getHijos().size() == 1 ){
+						Position<TNodo<E>> nuevaRaiz = nodo.getHijos().first();
+						raiz = nuevaRaiz.element();
+						raiz.setPadre(null);
+						size--;
+					}
+					else{
+						if  (size == 1 ){
+							raiz = null;
+							size--;
+						}
+						else{
+							throw new InvalidPositionException("No se puede eliminar ...");
+						}
+					}
+				}
+			}
+		} catch (EmptyListException | BoundaryViolationException e) {
+			throw new InvalidPositionException("");
+		}
 	}
 
 	@Override
 	public void removeNode(Position<E> p) throws InvalidPositionException {
-		if ( size == 0)
+		if (isEmpty())
 			throw new InvalidPositionException("no se ... ");
 		try{
 			TNodo<E> n = checkPosition(p);
-			if ( n == raiz ){
+			if (isRoot(n)){
 				if ( n.getHijos().size() == 1 ){
 					Position<TNodo<E>> nuevaRaiz = n.getHijos().first();
 					raiz = nuevaRaiz.element();
@@ -170,7 +340,7 @@ public class ArbolGen<E> implements Tree<E> {
 					size--;
 				}
 				else{
-					if  ( size == 1 ){
+					if  (size == 1 ){
 						raiz = null;
 						size--;
 					}
@@ -202,10 +372,34 @@ public class ArbolGen<E> implements Tree<E> {
 		}		
 	}
 	
+	private boolean checkFather(Position<E> h) throws InvalidPositionException{
+		TNodo<E> nodo = checkPosition(h);
+		TNodo<E> padre = nodo.getPadre();
+		TNodo<E> cursor;
+		PositionList<TNodo<E>> hijos = padre.getHijos();
+		boolean esta = false;
+		Iterator<TNodo<E>> it = hijos.iterator();
+		while (it.hasNext() && !esta) {
+			cursor = it.next();
+			if (cursor == nodo) {
+				esta = true;
+			}
+		}
+		if (!esta)
+			throw new InvalidPositionException("El nodo no es hijo de su padre");
+		return esta;
+	}
+	
 	private TNodo<E> checkPosition(Position<E> v) throws InvalidPositionException {
-		if (v == null)
-			throw new InvalidPositionException("La posicion se nula");
-		return (TNodo<E>) v;
+		try {
+			if(v == null)
+				throw new InvalidPositionException("La posición es nula.");
+			if(v.element() == null)
+				throw new InvalidPositionException("La posición fue eliminada previamente.");
+			return (TNodo<E>) v;
+		} catch(ClassCastException e) {
+			throw new InvalidPositionException("La posición es inválida, no es de tipo Nodo E.");
+		}
 	}
 
 }
