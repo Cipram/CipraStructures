@@ -1,7 +1,6 @@
 package TDAArbol;
 
-import TDALista.Position;
-import TDALista.PositionList;
+import TDALista.*;
 
 public class TNodo<E> implements Position<E>{
 	protected E elem;
@@ -14,6 +13,7 @@ public class TNodo<E> implements Position<E>{
 	 */
 	public TNodo(E elemento){
 		elem = elemento;
+		hijos = new ListaDE<TNodo<E>>();
 	}
 	
 	/**
