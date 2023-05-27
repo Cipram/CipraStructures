@@ -433,7 +433,7 @@ public class ArbolGen<E> implements Tree<E> {
 					prof = profundidad(aux);
 					System.out.println();
 				}
-				System.out.print(aux.element().toString());
+				System.out.print(" " + aux.element().toString() + " ");
 				if (!aux.getHijos().isEmpty()) {
 					for (Position<TNodo<E>> p : aux.getHijos().positions()) {
 						cola.enqueue(p.element());
