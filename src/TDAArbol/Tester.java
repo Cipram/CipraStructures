@@ -28,11 +28,11 @@ public class Tester {
 			
 			TNodo<Integer> n10 = (TNodo<Integer>) t1.addLastChild(n4, 10);
 			
-			TNodo<Integer> n11 = (TNodo<Integer>) t1.addLastChild(n6, 11);
+			TNodo<Integer> n11 = (TNodo<Integer>) t1.addLastChild(n4, 11);
 			
-			TNodo<Integer> n12 = (TNodo<Integer>) t1.addLastChild(n8, 12);
+			//TNodo<Integer> n12 = (TNodo<Integer>) t1.addLastChild(n8, 12);
 			
-			TNodo<Integer> n13 = (TNodo<Integer>) t1.addLastChild(n11, 13);
+			//TNodo<Integer> n13 = (TNodo<Integer>) t1.addLastChild(n11, 13);
 			
 			System.out.println();
 			System.out.println("----[ej4 - d]----");
@@ -98,7 +98,23 @@ public class Tester {
 			System.out.println("---[ej 7]-----");
 			System.out.println();
 			
+			//t1.cambioRotulo(15, 1);
 			
+			//t1.mostrarPorNiveles();
+			
+			System.out.println();
+			System.out.println("---[ej 8]-----");
+			System.out.println();
+			
+			t1.rotarhijos(1);
+			
+			t1.mostrarPorNiveles();
+			
+			System.out.println();
+			System.out.println("---[ej 9]-----");
+			System.out.println();
+			
+			System.out.println(OpArbol.ancestroComun(n11, n5, t1).element());
 			
 		} catch (InvalidPositionException | InvalidOperationException | EmptyTreeException e) {
 			System.out.println(e.getMessage());
