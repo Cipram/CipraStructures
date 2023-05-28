@@ -1,7 +1,6 @@
 package TDABinaryTree;
 
 import Exceptions.*;
-import TDAArbol.Tree;
 import TDALista.Position;
 
 /**
@@ -11,7 +10,7 @@ import TDALista.Position;
  * @author C�tedra de Estructuras de Datos, Departamento de Cs. e Ing. de la Computaci�n, UNS.
  */
 
-public interface BinaryTree<E> extends Tree<E> {
+public interface BinaryTree<E> extends GTTree<E> {
 	/**
 	 * Devuelve la posici�n del hijo izquierdo de v.
 	 * @param v Posici�n de un nodo.
@@ -50,10 +49,10 @@ public interface BinaryTree<E> extends Tree<E> {
 	/**
 	 * Crea un nodo con r�tulo e como ra�z del �rbol.
 	 * @param E R�tulo que se asignar� a la ra�z del �rbol.
+	 * @return 
 	 * @throws InvalidOperationException si el �rbol ya tiene un nodo ra�z.
 	 */
-	public void createRoot(E r) throws InvalidOperationException;
-	
+	public Position<E> createRoot(E r) throws InvalidOperationException;
 	
 	/**
 	 * Agrega un nodo con r�tulo r como hijo izquierdo de un nodo dado.

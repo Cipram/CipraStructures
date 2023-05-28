@@ -1,4 +1,4 @@
-package TDAArbol;
+package Exceptions;
 
 @SuppressWarnings("serial")
 public class EmptyTreeException extends Exception {
