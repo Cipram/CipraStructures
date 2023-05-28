@@ -132,14 +132,6 @@ public class ListaDE<E> implements PositionList<E> {
 			p.addLast(pos);
 			} 
 		return p;
-		
-        /* PositionList<Position<E>> toReturn = new ListaDE<Position<E>>();
-        Nodo<E> nodo = header.getNext();
-        while(nodo != trailer) {
-            toReturn.addLast(nodo);
-            nodo = nodo.getNext();
-        }
-        return toReturn; */
     }
 	 
 	private Nodo<E> checkPosition(Position<E> p) throws InvalidPositionException {

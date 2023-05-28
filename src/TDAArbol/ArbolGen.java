@@ -60,13 +60,20 @@ public class ArbolGen<E> implements Tree<E> {
 	
 	@Override
 	public E replace(Position<E> v, E e) throws InvalidPositionException {
-		if (isEmpty())
-			throw new InvalidPositionException("el arbol esta vacio");
-		TNodo<E> nodo = checkPosition(v);
-		TNodo<E> nuevo = new TNodo<E>(e);
-		return null;
-	}
-	
+        TNodo<E> reemplazar = checkPosition(v);
+        E toReturn = null;
+        boolean encontre= false;
+        Iterator<E> It = iterator();
+        while(It.hasNext() && !encontre) {
+
+            toReturn = It.next();
+            if(toReturn == reemplazar.element()) {
+                reemplazar.setElemento(e);
+                encontre = true;
+            }
+        }
+        return toReturn;
+    }	
 
 	@Override
 	public Position<E> root() throws EmptyTreeException {
@@ -433,7 +440,11 @@ public class ArbolGen<E> implements Tree<E> {
 					prof = profundidad(aux);
 					System.out.println();
 				}
-				System.out.print(" " + aux.element().toString() + " ");
+				if (aux.getPadre() != null)
+					System.out.print(" " + aux.element().toString() + "[" + aux.getPadre().element().toString() + "]" + " ");
+				else
+					System.out.print(" " + aux.element().toString() + "[-]" + " ");
+				
 				if (!aux.getHijos().isEmpty()) {
 					for (Position<TNodo<E>> p : aux.getHijos().positions()) {
 						cola.enqueue(p.element());
@@ -502,6 +513,69 @@ public class ArbolGen<E> implements Tree<E> {
 			e1.printStackTrace();
 		}
 		
+	}
+	
+	//ej 7
+	
+	public void cambioRotulo(E rot, int altura) {
+		prevCambio(raiz, altura, rot);
+	}
+	
+	private void prevCambio(TNodo<E> nodo, int a, E r) {
+		int h = OpArbol.altura(this,nodo);
+		try {
+			if (h == a) {
+				addLastChild(nodo, r);
+			}
+			else
+			//if (h > a) {
+				for (TNodo<E> hijo : nodo.getHijos()) {
+					prevCambio(hijo,a,r);
+				}
+			//}
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	//ej 8
+	
+	public void rotarhijos(E r) {
+		preRotar(raiz,r);
+	}
+	
+	private void preRotar(TNodo<E> nodo, E rot) {
+		try {
+			if (isInternal(nodo) && nodo.element().equals(rot))
+				invertirHijos(nodo);
+			else {
+				for (TNodo<E> hijo : nodo.getHijos()) {
+					preRotar(hijo,rot);
+				}
+			}
+		} catch (InvalidPositionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void invertirHijos(TNodo<E> nodo) {
+		PositionList<TNodo<E>> l = nodo.getHijos();
+		try {
+			Position<TNodo<E>> pri =  l.first();
+			Position<TNodo<E>> ult =  l.last();
+			TNodo<E> aux; 
+			while (pri != ult && l.last() != pri) {
+				aux = ult.element();
+				l.set(ult, pri.element());
+				l.set(pri, aux);
+				pri = l.next(pri);
+				ult = l.prev(ult);	
+			}
+		} catch (InvalidPositionException | BoundaryViolationException | EmptyListException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

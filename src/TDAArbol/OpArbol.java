@@ -143,7 +143,7 @@ public class OpArbol {
 		return camino;
 	}
 	
-	public static <E> TNodo<E> preB(TNodo<E> n, E r, ArbolGen<E> t){
+	private static <E> TNodo<E> preB(TNodo<E> n, E r, ArbolGen<E> t){
 		TNodo<E> ret = null;
 		if (n.element().equals(r)) {
 			ret = n;
@@ -152,7 +152,7 @@ public class OpArbol {
 			for (TNodo<E> hijo : n.getHijos()) {
 				if (ret == null)
 					ret = preB(hijo,r,t);
-			}
+				}
 		}
 		return ret;
 	}
@@ -182,6 +182,51 @@ public class OpArbol {
 			e.printStackTrace();
 		}
 		return mayor;
+	}
+	
+	// ej 9
+	
+	public static <E> TNodo<E> ancestroComun(TNodo<E> p1, TNodo<E> p2, ArbolGen<E> t){
+		return buscarComun(p1,p2,t);
+	}
+	
+	private static <E> TNodo<E> buscarComun(TNodo<E> p1, TNodo<E> p2, ArbolGen<E> t){
+		TNodo<E> ret = null;
+		try {
+			if (preParientes(p1, p2, t)) {
+				ret = p1;
+			} else {
+				if (!t.isRoot(p1))
+					ret = buscarComun((TNodo<E>)t.parent(p1),p2,t);
+				else
+					ret = p1;
+			}
+		} catch (InvalidPositionException | BoundaryViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+		
+	}
+ 
+	// ------- metodos aux -------
+	
+	public static <E> int altura( Tree<E> T, Position<E> v ) {
+		int altura = 0;
+		try {
+			if( T.isExternal(v) ) 
+				altura = 0;
+			else {
+				int h = 0;
+				for( Position<E> w : T.children(v) )
+					h = Math.max(h, altura(T, w));
+			altura =  1+h; 
+			}
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}
+		return altura;
+		 
 	}
 	
 	private static <E> int Profundidad(Position<E> v, ArbolGen<E> t) {
