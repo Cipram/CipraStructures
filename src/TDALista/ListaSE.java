@@ -4,11 +4,6 @@ import Exceptions.*;
 
 import java.util.Iterator;
 
-// El encapsulamiento de datos es un tema central en ED. Es por esto,
-// que no se pueden definir operaciones del TDALista en término de sus
-// nodos, para ello se crea la nocion de posicion en una lista.
-// Con esto, la interfaz TDALista no utilizará nodos sino que posiciones.
-
 public class ListaSE<E> implements PositionList<E>{
 	protected Nodo<E> head;
 	protected int size;

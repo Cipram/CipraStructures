@@ -534,7 +534,6 @@ public class ArbolGen<E> implements Tree<E> {
 				}
 			//}
 		} catch (InvalidPositionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
