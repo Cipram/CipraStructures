@@ -114,7 +114,7 @@ public class Tester {
 			System.out.println("---[ej 9]-----");
 			System.out.println();
 			
-			System.out.println(OpArbol.ancestroComun(n11, n5, t1).element());
+			System.out.println(OpArbol.ancestroComun(n8, n9, t1).element());
 			
 		} catch (InvalidPositionException | InvalidOperationException | EmptyTreeException e) {
 			System.out.println(e.getMessage());
