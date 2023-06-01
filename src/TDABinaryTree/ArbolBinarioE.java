@@ -3,7 +3,8 @@ package TDABinaryTree;
 import java.util.Iterator;
 
 import Exceptions.*;
-
+import TDAArbol.TNodo;
+import TDACola.ColaEnlazada;
 import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
@@ -300,6 +301,34 @@ public class ArbolBinarioE<E> implements BinaryTree<E> {
 		if (p.element() == null)
 			throw new InvalidPositionException("El elemento de la posicione es nula");
 		return (BTNode<E>) p;
+	}
+	
+	public void mostrarPorNiveles() {
+		ColaEnlazada<BTNode<E>> cola = new ColaEnlazada<BTNode<E>>();
+		cola.enqueue((BTNode<E>) raiz);
+		BTNode<E> padre = (BTNode<E>) raiz;
+		BTNode<E> hijo;
+		BTNode<E> aux;
+		int prof = 0;
+		try {
+			while (!cola.isEmpty()) {
+				aux = cola.dequeue();
+				hijo = aux;
+				if (aux.getParent() != null)
+					System.out.print(" " + aux.element().toString() + "[" + aux.getParent().element().toString() + "]" + " ");
+				else
+					System.out.print(" " + aux.element().toString() + "[-]" + " ");
+				if (aux.left() != null) {
+					cola.enqueue((BTNode<E>) aux.left());
+				}
+				if (aux.right() != null) {
+					cola.enqueue((BTNode<E>) aux.right());
+				}
+			}
+			System.out.println();
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

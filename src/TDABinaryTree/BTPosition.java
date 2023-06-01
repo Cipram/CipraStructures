@@ -17,4 +17,6 @@ public interface BTPosition<E> extends Position<E> {
 	public void setElement(E e);
 	
 	public void setPadre(BTPosition<E> p);
+	
+	public int childrenNum();
 }
