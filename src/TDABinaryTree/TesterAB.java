@@ -23,6 +23,7 @@ public class TesterAB {
 			BTNode<Integer> n4 = (BTNode<Integer>) t.addRight(n1,4);
 			
 			BTNode<Integer> n5 = (BTNode<Integer>) t.addLeft(n2,5);
+			
 			BTNode<Integer> n6 = (BTNode<Integer>) t.addLeft(n3,6);
 			
 			BTNode<Integer> n7 = (BTNode<Integer>) t.addLeft(n5,7);
@@ -32,10 +33,11 @@ public class TesterAB {
 			
 			ArbolBinarioE<Integer> t1 = new ArbolBinarioE<Integer>();
 			
-			BTNode<Integer> nn0 = (BTNode<Integer>) t1.createRoot(5);
+			BTNode<Integer> nn0 = (BTNode<Integer>) t1.createRoot(2);
 			
-			BTNode<Integer> nn1 = (BTNode<Integer>) t1.addLeft(nn0,7);
-			BTNode<Integer> nn2 = (BTNode<Integer>) t1.addRight(nn0,8);
+			BTNode<Integer> nn1 = (BTNode<Integer>) t1.addLeft(nn0,5);
+			BTNode<Integer> nn2 = (BTNode<Integer>) t1.addLeft(nn1,7);
+			//BTNode<Integer> nn3 = (BTNode<Integer>) t1.addRight(nn1,8);
 			
 			System.out.println();
 			System.out.println("............ ej 2 / c .............");
@@ -83,7 +85,7 @@ public class TesterAB {
 			System.out.println("............ ej 3 / c .............");
 			System.out.println();
 			
-			System.out.println(OpAB.EsSubArbol(t1, t));
+			System.out.println(OpAB.esSub(t1, t));
 			
 			System.out.println();
 			System.out.println("............ ej 3 / d .............");

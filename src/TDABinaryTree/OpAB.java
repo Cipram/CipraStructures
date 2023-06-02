@@ -153,6 +153,72 @@ public class OpAB {
 	
 	// EJ 3 b
 	
+	public static <E> boolean esSub(BinaryTree<E> A1, BinaryTree<E> A) {
+		boolean es = false;
+		try {
+			es = preBusqueda((BTNode<E>) A1.root(), (BTNode<E>) A.root(), A, A1);
+		}
+		catch (EmptyTreeException e) {
+			
+		}
+		return es;
+	}
+	
+	private static<E> boolean preBusqueda(BTNode<E> n1, BTNode<E> n, BinaryTree<E> t, BinaryTree<E> t1) {
+		boolean es = false;
+		try {
+			if (n1.element().equals(n.element())) {
+				es = preSubArbol(n,n1,t,t1);
+			}
+			else {
+				for (Position<E> h : t.children(n)) {
+					if (es == false)
+						es = preBusqueda(n1, (BTNode<E>) h, t, t1);
+				}
+			}
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}
+		return es;
+	}
+	
+	private static<E> boolean preSubArbol(BTNode<E> n, BTNode<E> n1, BinaryTree<E> t, BinaryTree<E> t1) {
+		boolean esSub = true;
+		try {
+			if (!n.element().equals(n1.element())) {
+				esSub = false;
+			}
+			else {
+				//Controlando hijos izquierdos de n y n1
+				if (t.hasLeft(n) && t1.hasLeft(n1)){
+					esSub = preSubArbol((BTNode<E>) t.left(n), (BTNode<E>) t1.left(n1), t, t1);
+				}
+				else {
+					if (!t.hasLeft(n) && !t1.hasLeft(n1))
+						esSub = true;
+					else
+						esSub = false;
+				}
+				//Controlando hijos derechos de n y n1
+				if (esSub) {
+					if (t.hasRight(n) && t1.hasRight(n1)){
+						esSub = preSubArbol((BTNode<E>) t.right(n), (BTNode<E>) t1.right(n1), t, t1);
+					}
+					else {
+						if (!t.hasRight(n) && !t1.hasRight(n1))
+							esSub = true;
+						else
+							esSub = false;
+					}
+				}
+			}
+		}
+		catch (InvalidPositionException | BoundaryViolationException e) {
+			
+		}
+		return esSub;
+	}
+	
 	public static <E> boolean EsSubArbol(BinaryTree<E> A1, BinaryTree<E> A){
 		boolean es = false;
 		PositionList<E> l = new ListaDE<E>();
