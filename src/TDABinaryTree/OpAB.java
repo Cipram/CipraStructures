@@ -1,7 +1,7 @@
 package TDABinaryTree;
 
-import Exceptions.BoundaryViolationException;
-import Exceptions.InvalidPositionException;
+import TDACola.*;
+import Exceptions.*;
 import TDALista.*;
 
 public class OpAB {
@@ -87,29 +87,165 @@ public class OpAB {
 		} 
 	}
 	
-	public static <E> PositionList<E> alturacam(BTNode<E> n, BinaryTree<E> t){
-		
+	// EJ 2 F
+	
+	public static <E> PositionList<BTNode<E>> alturacam(BTNode<E> n, BinaryTree<E> t){
+		PositionList<BTNode<E>> l = new ListaDE<BTNode<E>>();
+		preCam(n,t,l);
+		return l;
 	}
 	
-	private static <E> int preCam(BTNode<E> n, BinaryTree<E> t) {
+	private static <E> int preCam(BTNode<E> n, BinaryTree<E> t, PositionList<BTNode<E>> l) {
 		int mayor = 0;
 		int aux = 1;
 		try {
 			if (t.isExternal(n))
 				mayor = 1;
-			else {
+			l.addLast(n);
 				for (Position<E> h : t.children(n)) {
-					aux = preCam(h,t);
-					if (aux > )
+					aux = preCam((BTNode<E>) h,t,l);
+					if (aux > mayor) {
+						for (int i = 0; i < mayor;i++) {
+							l.remove(l.first());
+						}
+						mayor = aux;
+					}
 				}
-			}
-		} catch (InvalidPositionException e) {
-			// TODO Auto-generated catch block
+		} catch (InvalidPositionException | EmptyListException e) {
 			e.printStackTrace();
 		}
 		return mayor;
 	}
 	
+	// EJ 3 a
+	
+	public static <E> boolean esPropio(BinaryTree<E> t) {
+		boolean es = false;
+		try {
+			es = preProp((BTNode<E>) t.root(),t);
+		} catch (EmptyTreeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return es;
+	}
+	
+	private static <E> boolean preProp(BTNode<E> n, BinaryTree<E> t){
+		boolean es = true;
+		try {
+			if (t.hasLeft(n) && t.hasRight(n)) {
+				for (Position<E> h : t.children(n)) {
+					if (es)
+						es = preProp((BTNode<E>) h, t);
+				}
+			}
+			else {
+				if (!t.hasLeft(n) && !t.hasRight(n))
+					es = true;
+				else
+					es = false;
+			}
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}
+		return es;
+	}
+	
+	// EJ 3 b
+	
+	public static <E> boolean EsSubArbol(BinaryTree<E> A1, BinaryTree<E> A){
+		boolean es = false;
+		PositionList<E> l = new ListaDE<E>();
+		PositionList<E> l1 = new ListaDE<E>();
+		
+		for (Position<E> h : A.positions()) {
+			l.addLast(h.element());
+		}
+		for (Position<E> h : A1.positions()) {
+			l1.addLast(h.element());
+		}
+		
+		try {
+			Position<E> cursorA = l.first();
+			Position<E> cursorA1 = l1.first();
+			while (cursorA != l.last() || cursorA1 != l1.last()) {
+				if (cursorA.element().equals(cursorA1.element())) {
+					es = true;
+					if (cursorA1 != l1.last())
+						cursorA1 = l1.next(cursorA1);
+				}
+				else {
+					es = false;
+					cursorA1 = l1.first();
+				}
+				if (cursorA != l.last())
+					cursorA = l.next(cursorA);
+			}
+		} catch (EmptyListException | InvalidPositionException | BoundaryViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return es;
+	}
+	
+	//EJ 4
+	
+	public static <E> void mostrarExpresion(BinaryTree<E> t) {
+		try {
+			System.out.println("Expresion prefija: ");
+			for (Position<E> h : t.positions()) {
+				System.out.print(h.element());
+			}
+			System.out.println();
+			System.out.println("Expresion sufija: ");
+		
+			sufija((BTNode<E>) t.root(), t);
+			
+			System.out.println();
+			System.out.println("Expresion infija: ");
+			
+			infija((BTNode<E> )t.root(),t);
+		} catch (EmptyTreeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static <E> void sufija(BTNode<E> n, BinaryTree<E> t) {
+		try {
+			for (Position<E> h : t.children(n)) {
+				sufija((BTNode<E>) h, t);
+			}
+			System.out.print(n.element());
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static <E> void infija(BTNode<E> n, BinaryTree<E> t) {
+		ColaEnlazada<BTNode<E>> cola = new ColaEnlazada<BTNode<E>>();
+		BTNode<E> aux;
+		try {
+			cola.enqueue((BTNode<E>) t.root());
+		} catch (EmptyTreeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			while (!cola.isEmpty()) {
+				aux = cola.dequeue();
+				System.out.print(aux.element());
+				for (Position<E> h : t.children(aux)) {
+					cola.enqueue((BTNode<E>) h);
+				}
+			}
+		} catch (EmptyQueueException | InvalidPositionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//------------- aux ------------
 	private static <E> int profundidad(BTNode<E> n, BinaryTree<E> t){
 		int prof = 0;
 		try {
