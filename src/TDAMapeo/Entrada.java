@@ -29,5 +29,11 @@ public class Entrada<K,V> implements Entry<K,V> {
 	public String toString() {
 		return "("+getKey()+','+getValue()+")";
 	}
+
+	@Override
+	public int compareTo(K o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }
