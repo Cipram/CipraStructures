@@ -5,7 +5,7 @@ package TDAMapeo;
  * @author Thiago Trotta
  */
 
-public interface Entry<K,V> {
+public interface Entry<K,V> extends Comparable<K>{
 	/**
 	 * Consulta la clave de la entrada.
 	 * @return la clave de la entrada.
