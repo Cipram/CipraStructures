@@ -12,6 +12,8 @@ public class TesterAB {
 		
 		BTNode<Integer> n0;
 		try {
+			
+			//Arbol 1
 			n0 = (BTNode<Integer>) t.createRoot(0);
 		
 			BTNode<Integer> n1 = (BTNode<Integer>) t.addLeft(n0,1);
@@ -25,8 +27,18 @@ public class TesterAB {
 			BTNode<Integer> n6 = (BTNode<Integer>) t.addLeft(n3,6);
 			
 			BTNode<Integer> n7 = (BTNode<Integer>) t.addLeft(n5,7);
-			BTNode<Integer> n8 = (BTNode<Integer>) t.addRight(n5,8);		
-		
+			BTNode<Integer> n8 = (BTNode<Integer>) t.addRight(n5,8);	
+			
+			//Arbol2
+			
+			ArbolBinarioE<Integer> t1 = new ArbolBinarioE<Integer>();
+			
+			BTNode<Integer> nn0 = (BTNode<Integer>) t1.createRoot(2);
+			
+			BTNode<Integer> nn1 = (BTNode<Integer>) t1.addLeft(nn0,5);
+			BTNode<Integer> nn2 = (BTNode<Integer>) t1.addLeft(nn1,7);
+			//BTNode<Integer> nn3 = (BTNode<Integer>) t1.addRight(nn1,8);
+			
 			System.out.println();
 			System.out.println("............ ej 2 / c .............");
 			System.out.println();
@@ -36,28 +48,50 @@ public class TesterAB {
 			System.out.println();
 			System.out.println("............ ej 2 / b .............");
 			System.out.println();
-			
+			/*
 			PositionList<BTNode<Integer>> l = OpAB.parientesCamino(n0, n6, t);
 			
 			for (BTNode<Integer> h : l) {
 				System.out.println(h.element());
 			}
-			
+			*/
 			System.out.println();
 			System.out.println("............ ej 2 / e .............");
 			System.out.println();
-			
+			/*
 			PositionList<BTNode<Integer>> l1 = OpAB.profundiadCam(n8,t);
 			
 			for (BTNode<Integer> h : l1) {
 				System.out.println(h.element());
 			}
-			
+			*/
 			System.out.println();
 			System.out.println("............ ej 2 / f .............");
 			System.out.println();
 			
+			PositionList<BTNode<Integer>> l2 = OpAB.alturacam(n2, t);
 			
+			for (BTNode<Integer> h : l2) {
+				System.out.println(h.element());
+			}
+			
+			System.out.println();
+			System.out.println("............ ej 3 / a .............");
+			System.out.println();
+			
+			System.out.println(OpAB.esPropio(t));
+			
+			System.out.println();
+			System.out.println("............ ej 3 / c .............");
+			System.out.println();
+			
+			System.out.println(OpAB.esSub(t1, t));
+			
+			System.out.println();
+			System.out.println("............ ej 3 / d .............");
+			System.out.println();
+			
+			OpAB.mostrarExpresion(t);
 			
 		} catch (InvalidOperationException | InvalidPositionException e) {
 			// TODO Auto-generated catch block
