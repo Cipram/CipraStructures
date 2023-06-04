@@ -69,7 +69,9 @@ public class TesterAB {
 			System.out.println("............ ej 2 / f .............");
 			System.out.println();
 			
-			PositionList<BTNode<Integer>> l2 = OpAB.alturacam(n2, t);
+			t.mostrarPorNiveles();
+			
+			PositionList<BTNode<Integer>> l2 = OpAB.alturacam(n0, t);
 			
 			for (BTNode<Integer> h : l2) {
 				System.out.println(h.element());

@@ -2,6 +2,11 @@ package TDAArbolBB;
 
 import java.util.Comparator;
 
+import Exceptions.EmptyQueueException;
+import Exceptions.InvalidKeyException;
+import TDACola.ColaEnlazada;
+import TDAPila.PilaConEnlaces;
+
 public class ABB<E extends Comparable<E>> {
 	protected NodoABB<E> raiz;
 	protected Comparator<E> comp;
@@ -19,15 +24,15 @@ public class ABB<E extends Comparable<E>> {
 		int c;
 		NodoABB<E> ret = null;
 		if (p.getRotulo() == null)
-			return p;
+			ret = p;
 		else {
 			c = comp.compare(x, p.getRotulo());
 			if (c == 0)
-				return p;
+				ret = p;
 			else 
-				if (c < 0)
+				if (c < 0) 
 					ret = buscarAux(x,p.getLeft());
-				else
+				else 
 					ret = buscarAux(x,p.getRight());
 		}
 		return ret;
@@ -35,68 +40,75 @@ public class ABB<E extends Comparable<E>> {
 	
 	public void expandir(NodoABB<E> p) {
 		p.setLeft(new NodoABB<E>(null,p));
-		p.setPadre(new NodoABB<E>(null,p));
+		p.setRight(new NodoABB<E>(null,p));
 	}
 	
-	public void eliminar( NodoABB<E> p ) {
-		
-		if (isExternal(p)) {
-			// Caso 1: p es hoja => Convertir el nodo en un dummy y soltar sus hijos dummy.
-			p.setRotulo(null);
-			p.setLeft(null);
-			p.setRight(null);
+	public E remove(E rot) throws InvalidKeyException {
+		//checkRot(rot);
+		NodoABB<E> n = buscar(rot);
+		E eliminado = null;
+		if (n.getRotulo()!= null) {
+			eliminado =  n.getRotulo();
+			eliminar(n);
 		}
-		else { // p no es hoja
-			if ( p == raiz ){
-				//…. Completar …. Con casos 2, 3 y 4 …
-				System.out.println();
-			}
-			else 
-				if (soloTieneHijoIzq(p)) {
-				// Caso 2: Enganchar al padre de p con el hijo izquierdo de p
-					if(p.getPadre().getLeft() == p) // p es el hijo izquierdo de su padre
-						p.getPadre().setRight(p.getLeft()); // el hijo izq del padre de p es ahora el hijo de p
-					else // p es el hijo derecho de su padre
-						p.getPadre().setRight(p.getLeft()); // el hijo derecho del padre de p es el hijo de p
-				p.getLeft().setPadre(p.getPadre()); // Ahora el padre del hijo izq de p es su abuelo
-				}
-				else
-					if (soloTieneHijoDer(p)){
-						// Caso 3: Enganchar al padre de p con el hijo derecho de p
-						if( p.getPadre().getLeft() == p ) // p es hijo izquierdo de su padre
-							p.getPadre().setLeft( p.getRight() ); // el hijo izq del padre de p es el hijo de p
-						else
-							p.getPadre().setRight( p.getRight() ); // el hijo derecho del padre de p es el hijo de p
-						p.getRight().setPadre( p.getPadre() ); // Ahora el padre del hijo der. de p es su abuelo
-					}
-					else { // Caso 4: p tiene dos hijos => seteo como rótulo de p al rótulo del sucesor inorder de p.
-						p.setRotulo(eliminarMinimo( p.getRight()));
-					}
-		}
-	}
-	
-	private E eliminarMinimo( NodoABB<E> p ) {
-		if( p.getLeft().getRotulo() == null ) { // El hijo izquierdo de p es un dummy
-			E aRetornar = p.getRotulo(); // salvo el rótulo a devolver
-			if( p.getRight().getRotulo() == null ) { // p es hoja (pues sus hijos son dummy)
-				p.setRotulo( null ); // Convierto a p en dummy haciendo nulo su rótulo
-				p.setLeft( null ); // y desenganchando sus dos hijos dummy
-				p.setRight( null );
-			} 
-			else { // p solo tiene hijo derecho (xq no tiene izquierdo)
-				// Engancho al padre de p con el hijo derecho de p.
-				// Seguro tiene que ser el hijo derecho de su padre.
-				p.getPadre().setRight( p.getRight() );
-				p.getRight().setPadre( p.getPadre() );
-			}
-			return aRetornar;
-		}
-		else { // Si p tiene hijo izquierdo, entonces p.getRotulo() no es el mínimo.
-			// El mínimo tiene que estar en el subárbol izquierdo
-			return eliminarMinimo( p.getLeft() );
-		}
+		return eliminado;
 	}
 
+	private void eliminar(NodoABB<E> n) {
+		if (n == raiz) {
+			if (soloTieneHijoIzq(n)) {
+				raiz = n.getLeft();
+				raiz.setPadre(null);
+			}
+			else {
+				if (soloTieneHijoIzq(n)) {
+					raiz = n.getRight();
+					raiz.setPadre(null);
+				}
+				else {
+					NodoABB<E> min = encontrarMin(n.getRight());
+					n.setRotulo(min.getRotulo());
+					eliminar(min);
+				}
+			}
+		}
+		else
+			if (isExternal(n)){
+				n.setRotulo(null);
+				n.setLeft(null);
+				n.setRight(null);
+			}
+			else {
+				if (soloTieneHijoIzq(n)) { // el nodo solo tiene un hijo izquierdo
+					if (n.getPadre().getLeft() == n)
+						n.getPadre().setLeft(n.getLeft());
+					else
+						n.getPadre().setRight(n.getLeft());
+					n.getLeft().setPadre(n.getPadre());
+				}
+				else
+					if (soloTieneHijoDer(n)) { //el nodo solo tiene un hijo derecho
+						if (n.getPadre().getLeft()==n)
+							n.getPadre().setLeft(n.getRight());
+						else
+							n.getPadre().setRight(n.getRight());
+						n.getRight().setPadre(n.getPadre());
+					}
+					else { //el nodo tiene dos hijos
+						NodoABB<E> min = encontrarMin(n.getRight());
+						n.setRotulo(min.getRotulo());
+						eliminar(min);
+					}
+			}
+	}
+
+	private NodoABB<E> encontrarMin(NodoABB<E> n){
+		NodoABB<E> min = n;
+		while (!isExternal(min) || !soloTieneHijoDer(min)) {
+			min = n.getLeft();
+		}
+		return min;
+	}
 	private boolean isExternal(NodoABB<E> p) {
 		return p.getLeft().getRotulo() == null && p.getRight().getRotulo() == null;
 	}
@@ -112,4 +124,72 @@ public class ABB<E extends Comparable<E>> {
 	public NodoABB<E> getRaiz(){
 		return raiz;
 	}
+	
+	public void mostrarPorNiveles() {
+		ColaEnlazada<NodoABB<E>> cola = new ColaEnlazada<NodoABB<E>>();
+		cola.enqueue((NodoABB<E>) raiz);
+		
+		NodoABB<E> aux;
+		try {
+			while (!cola.isEmpty()) {
+				aux = cola.dequeue();
+				if (aux.getRotulo() != null) {
+					if (aux.getPadre() != null)
+						System.out.print(" " + aux.getRotulo().toString() + "[" + aux.getPadre().getRotulo().toString() + "]" + " ");
+					else
+						System.out.print(" " + aux.getRotulo().toString() + "[-]" + " ");
+				}
+				if (aux.getLeft() != null) {
+					cola.enqueue((NodoABB<E>) aux.getLeft());
+				}
+				if (aux.getRight() != null) {
+					cola.enqueue((NodoABB<E>) aux.getRight());
+				}
+			}
+			System.out.println();
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ABB<E> interseccion(ABB<E> B){
+		ABB<E> C = new ABB<E>(new MiComparator());
+		preBuscar(raiz, B, C);
+		return C;
+	}
+	
+	private void preBuscar(NodoABB<E> n, ABB<E> t, ABB<E> c) {
+		if (n != null && n.getRotulo() != null && t.buscar(n.getRotulo()).getRotulo() == null) {
+			NodoABB<E> aux = c.buscar(n.getRotulo());
+			aux.setRotulo(n.getRotulo());
+			c.expandir(aux);
+		}
+		if (n.getLeft() != null) {
+			preBuscar(n.getLeft(), t, c);
+		}
+		if (n.getRight() != null) {
+			preBuscar(n.getRight(), t, c);
+		}
+	}
+	
+	public NodoABB<E> ejercicio14(E rot){
+		NodoABB<E> n = buscar(rot);
+		NodoABB<E> ret = inBuscar(raiz, n, raiz);
+		return ret;
+	}
+	
+	private NodoABB<E> inBuscar(NodoABB<E> n, NodoABB<E> n1, NodoABB<E> n2){
+		NodoABB<E> ret = null;
+		if (n.getRotulo() != null && ret == null && n.getLeft().getRotulo() != null) {
+			ret = inBuscar(n.getLeft(), n1, n);
+		}
+		if (n == n1 && ret == null) {
+			ret = n2;
+		}
+		if (n.getRotulo() != null && ret == null && n.getRight().getRotulo() != null) {
+			ret = inBuscar(n.getRight(), n1, n);
+		}
+		return ret;
+	}
+
 }

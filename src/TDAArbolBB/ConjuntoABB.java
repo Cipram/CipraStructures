@@ -3,7 +3,9 @@ package TDAArbolBB;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import Exceptions.InvalidKeyException;
 import Exceptions.SetException;
+import Interfaces.Set;
 
 public class ConjuntoABB<E extends Comparable<E>> implements Set<E> {
 
@@ -34,7 +36,12 @@ public class ConjuntoABB<E extends Comparable<E>> implements Set<E> {
 	public void delete(E x) throws SetException {
 		NodoABB<E> p = elems.buscar(x);
 		if (p.getRotulo() != null) {
-			elems.eliminar(p);
+			try {
+				elems.remove(x);
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			size--;
 		}
 		else

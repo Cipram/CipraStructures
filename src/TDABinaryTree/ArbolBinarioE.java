@@ -306,14 +306,10 @@ public class ArbolBinarioE<E> implements BinaryTree<E> {
 	public void mostrarPorNiveles() {
 		ColaEnlazada<BTNode<E>> cola = new ColaEnlazada<BTNode<E>>();
 		cola.enqueue((BTNode<E>) raiz);
-		BTNode<E> padre = (BTNode<E>) raiz;
-		BTNode<E> hijo;
 		BTNode<E> aux;
-		int prof = 0;
 		try {
 			while (!cola.isEmpty()) {
 				aux = cola.dequeue();
-				hijo = aux;
 				if (aux.getParent() != null)
 					System.out.print(" " + aux.element().toString() + "[" + aux.getParent().element().toString() + "]" + " ");
 				else
