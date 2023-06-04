@@ -3,6 +3,7 @@ package TDAArbolBB;
 import java.util.Comparator;
 
 import Exceptions.EmptyQueueException;
+import Exceptions.EmptyStackException;
 import Exceptions.InvalidKeyException;
 import TDACola.ColaEnlazada;
 import TDAPila.PilaConEnlaces;
@@ -174,22 +175,40 @@ public class ABB<E extends Comparable<E>> {
 	
 	public NodoABB<E> ejercicio14(E rot){
 		NodoABB<E> n = buscar(rot);
-		NodoABB<E> ret = inBuscar(raiz, n, raiz);
-		return ret;
-	}
-	
-	private NodoABB<E> inBuscar(NodoABB<E> n, NodoABB<E> n1, NodoABB<E> n2){
-		NodoABB<E> ret = null;
-		if (n.getRotulo() != null && ret == null && n.getLeft().getRotulo() != null) {
-			ret = inBuscar(n.getLeft(), n1, n);
+		ColaEnlazada<NodoABB<E>> Cola = new ColaEnlazada<NodoABB<E>>();
+		inBuscar(raiz, n, Cola);
+		NodoABB<E> aux = null;
+		try {
+			while (!Cola.isEmpty() && n != Cola.front()) {
+				aux = Cola.dequeue();
+			}
+		} catch(EmptyQueueException e) {
+			
 		}
-		if (n == n1 && ret == null) {
-			ret = n2;
-		}
-		if (n.getRotulo() != null && ret == null && n.getRight().getRotulo() != null) {
-			ret = inBuscar(n.getRight(), n1, n);
-		}
-		return ret;
+		return aux;
 	}
 
+	private void inBuscar(NodoABB<E> n, NodoABB<E> n1, ColaEnlazada<NodoABB<E>> p){
+		if (n.getRotulo() != null && n.getLeft().getRotulo() != null) {
+			inBuscar(n.getLeft(), n1, p);
+		}
+		p.enqueue(n);
+		if (n.getRotulo() != null && n.getRight().getRotulo() != null) {
+			inBuscar(n.getRight(), n1, p);
+		}
+	}
+	
+	public void mostrarInOr() {
+		mostrarInOrden(raiz);
+	}
+	
+	private void mostrarInOrden(NodoABB<E> n){
+		if (n.getRotulo() != null && n.getLeft().getRotulo() != null) {
+			mostrarInOrden(n.getLeft());
+		}
+		System.out.print(n.getRotulo() + "-");
+		if (n.getRotulo() != null && n.getRight().getRotulo() != null) {
+			mostrarInOrden(n.getRight());
+		}
+	}
 }

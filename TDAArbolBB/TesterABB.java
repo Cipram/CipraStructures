@@ -30,6 +30,8 @@ public class TesterABB {
 		System.out.println("***************| ej 9 |**************");
 		System.out.println();
 		
+		t.mostrarInOr();
+		System.out.println();
 		System.out.println(t.ejercicio14(14).getRotulo());
 		
 	}
