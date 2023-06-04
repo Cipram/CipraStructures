@@ -1,4 +1,4 @@
-package TDAArbolBB;
+package Interfaces;
 
 import Exceptions.SetException;
 

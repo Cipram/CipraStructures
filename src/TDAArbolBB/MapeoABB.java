@@ -3,6 +3,8 @@ package TDAArbolBB;
 import java.util.Comparator;
 
 import Exceptions.InvalidKeyException;
+import TDALista.ListaDE;
+import TDALista.PositionList;
 import TDAMapeo.*;
 
 public class MapeoABB<K,V> implements Map<K,V> {
@@ -19,8 +21,7 @@ public class MapeoABB<K,V> implements Map<K,V> {
 	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
@@ -66,6 +67,7 @@ public class MapeoABB<K,V> implements Map<K,V> {
 		if (n.getRotulo()!= null) {
 			eliminado =  n.getRotulo().getValue();
 			eliminar(n);
+			size--;
 		}
 		return eliminado;
 	}
@@ -74,10 +76,13 @@ public class MapeoABB<K,V> implements Map<K,V> {
 		if (n == root) {
 			if (soloTieneHijoIzq(n)) {
 				root = n.getLeft();
+				root.setPadre(null);
 			}
 			else {
-				if (soloTieneHijoIzq(n))
+				if (soloTieneHijoIzq(n)) {
 					root = n.getRight();
+					root.setPadre(null);
+				}
 				else {
 					NodoABB<Entry<K,V>> min = encontrarMin(n.getRight());
 					n.setRotulo(min.getRotulo());
@@ -92,7 +97,7 @@ public class MapeoABB<K,V> implements Map<K,V> {
 				n.setRight(null);
 			}
 			else {
-				if (soloTieneHijoIzq(n)){ // el nodo solo tiene un hijo izquierdo
+				if (soloTieneHijoIzq(n)) { // el nodo solo tiene un hijo izquierdo
 					if (n.getPadre().getLeft() == n)
 						n.getPadre().setLeft(n.getLeft());
 					else
@@ -100,7 +105,7 @@ public class MapeoABB<K,V> implements Map<K,V> {
 					n.getLeft().setPadre(n.getPadre());
 				}
 				else
-					if (soloTieneHijoDer(n)){ //
+					if (soloTieneHijoDer(n)) { //el nodo solo tiene un hijo derecho
 						if (n.getPadre().getLeft()==n)
 							n.getPadre().setLeft(n.getRight());
 						else
@@ -112,10 +117,9 @@ public class MapeoABB<K,V> implements Map<K,V> {
 						n.setRotulo(min.getRotulo());
 						eliminar(min);
 					}
-			size--;
 			}
 	}
-	
+
 	private NodoABB<Entry<K,V>> encontrarMin(NodoABB<Entry<K,V>> n){
 		NodoABB<Entry<K,V>> min = n;
 		while (!isExternal(min) || !soloTieneHijoDer(min)) {
@@ -123,25 +127,37 @@ public class MapeoABB<K,V> implements Map<K,V> {
 		}
 		return min;
 	}
-	
+
 	@Override
 	public Iterable<K> keys() {
-
-		return null;
+		PositionList<K> l = new ListaDE<K>();
+		if (!isEmpty())
+			for (NodoABB<Entry<K,V>> h : nodos()) {
+				l.addLast(h.getRotulo().getKey());
+			}
+		return l;
 	}
 
 	@Override
 	public Iterable<V> values() {
-		// TODO Auto-generated method stub
-		return null;
+		PositionList<V> l = new ListaDE<V>();
+		if (!isEmpty())
+			for (NodoABB<Entry<K,V>> h : nodos()) {
+				l.addLast(h.getRotulo().getValue());
+			}
+		return l;
 	}
 
 	@Override
 	public Iterable<Entry<K, V>> entries() {
-		// TODO Auto-generated method stub
-		return null;
+		PositionList<Entry<K,V>> l = new ListaDE<Entry<K,V>>();
+		if (!isEmpty())
+			for (NodoABB<Entry<K,V>> h : nodos()) {
+				l.addLast(h.getRotulo());
+			}
+		return l;
 	}
-	
+
 	private NodoABB<Entry<K,V>> buscar(K key){
 		return buscarAux(key,root);
 	}
@@ -163,25 +179,40 @@ public class MapeoABB<K,V> implements Map<K,V> {
 		}
 		return ret;
 	}
-	
+
 	private boolean isExternal(NodoABB<Entry<K,V>> p) {
 		return p.getLeft().getRotulo() == null && p.getRight().getRotulo() == null;
 	}
-	
+
 	private boolean soloTieneHijoIzq(NodoABB<Entry<K,V>> p) {
 		return p.getLeft() != null && p.getRight().getRotulo() == null;
 	}
-	
+
 	private boolean soloTieneHijoDer(NodoABB<Entry<K,V>> p) {
 		return p.getRight() != null && p.getLeft().getRotulo() == null;
 	}
-	
+
 	public NodoABB<Entry<K,V>> getRaiz(){
 		return root;
 	}
-	
+
 	private void checkKey(K key) throws InvalidKeyException{
-		if (key != null)
+		if (key == null)
 			throw new InvalidKeyException("key nula");
+	}
+
+	private PositionList<NodoABB<Entry<K,V>>> nodos(){
+		PositionList<NodoABB<Entry<K,V>>> l = new ListaDE<NodoABB<Entry<K,V>>>();
+		if (!isEmpty());
+			inOrder(root,l);
+		return l;
+	}
+
+	private void inOrder(NodoABB<Entry<K,V>> n, PositionList<NodoABB<Entry<K,V>>> l) {
+		if (n.getLeft().getRotulo() != null)
+			inOrder(n.getLeft(),l);
+		l.addLast(n);
+		if (n.getRight().getRotulo() != null)
+			inOrder(n.getRight(),l);
 	}
 }

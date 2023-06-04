@@ -97,19 +97,34 @@ public class OpAB {
 	
 	private static <E> int preCam(BTNode<E> n, BinaryTree<E> t, PositionList<BTNode<E>> l) {
 		int mayor = 0;
-		int aux = 1;
+		int aux = 0;
 		try {
 			if (t.isExternal(n))
 				mayor = 1;
 			l.addLast(n);
 				for (Position<E> h : t.children(n)) {
-					aux = preCam((BTNode<E>) h,t,l);
+					aux = 1 + preCam((BTNode<E>) h,t,l);
 					if (aux > mayor) {
 						for (int i = 0; i < mayor;i++) {
 							l.remove(l.first());
 						}
 						mayor = aux;
 					}
+					else {
+						if (aux < mayor) {
+							for (int j = 1; j < aux; j++) {
+								l.remove(l.last());
+							}
+						}
+						else {
+							if (aux == mayor) {
+								for (int j = 1; j < aux; j++) {
+									l.remove(l.first());
+								}	
+							}
+						}
+					}
+					aux = 0;
 				}
 		} catch (InvalidPositionException | EmptyListException e) {
 			e.printStackTrace();

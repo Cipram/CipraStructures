@@ -54,6 +54,15 @@ public class BTNode<E> implements BTPosition<E> {
 	public void setPadre(BTPosition<E> p) {
 		parent = p;
 	}
+	@Override
+	public int childrenNum() {
+		int cant = 0;
+		if (left != null)
+			cant++;
+		if (right != null)
+			cant++;
+		return cant;
+	}
 	
 	
 }
