@@ -2,12 +2,7 @@ package TDAArbol;
 
 import java.util.Iterator;
 
-import Exceptions.BoundaryViolationException;
-import Exceptions.EmptyListException;
-import Exceptions.EmptyQueueException;
-import Exceptions.EmptyStackException;
-import Exceptions.InvalidOperationException;
-import Exceptions.InvalidPositionException;
+import Exceptions.*;
 import TDACola.ColaEnlazada;
 import TDALista.*;
 import TDAPila.PilaConEnlaces;
@@ -274,13 +269,13 @@ public class ArbolGen<E> implements Tree<E> {
 		try{
 			TNodo<E> n = checkPosition(p);
 			if (isRoot(n)){
-				if ( n.getHijos().size() == 1 ){
+				if (n.getHijos().size() == 1){
 					Position<TNodo<E>> nuevaRaiz = n.getHijos().first();
 					raiz = nuevaRaiz.element();
 					raiz.setPadre(null);
 					size--;
 				}
-				else{
+				else {
 					if  (size == 1 ){
 						raiz = null;
 						size--;
@@ -296,7 +291,7 @@ public class ArbolGen<E> implements Tree<E> {
 				PositionList<TNodo<E>> hijosPadre = padre.getHijos();
 				Position<TNodo<E>> primero = hijosPadre.first(); 
 				
-				while( primero.element() != n ) //se busca la posicion de 
+				while(primero.element() != n) //se busca la posicion de 
 					primero = hijosPadre.next(primero);
 				
 				while ( !hijosN.isEmpty() ){

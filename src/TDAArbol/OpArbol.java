@@ -1,8 +1,6 @@
 package TDAArbol;
 
-import Exceptions.BoundaryViolationException;
-import Exceptions.EmptyListException;
-import Exceptions.InvalidPositionException;
+import Exceptions.*;
 import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;

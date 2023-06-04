@@ -1,8 +1,6 @@
 package TDAArbol;
 
-import Exceptions.InvalidOperationException;
-import Exceptions.InvalidPositionException;
-import TDALista.Position;
+import Exceptions.*;
 import TDALista.PositionList;
 
 public class Tester {
@@ -106,7 +104,7 @@ public class Tester {
 			System.out.println("---[ej 8]-----");
 			System.out.println();
 			
-			t1.rotarhijos(1);
+			t1.rotarhijos(0);
 			
 			t1.mostrarPorNiveles();
 			
