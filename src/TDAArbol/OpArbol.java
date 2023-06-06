@@ -4,6 +4,7 @@ import Exceptions.*;
 import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
+import TDAMapeo.Map;
 
 public class OpArbol {
 
@@ -207,6 +208,11 @@ public class OpArbol {
 		
 	}
  
+	public static <E> Map<Character,Integer> mapeo(){
+		return null;
+		
+	}
+	
 	// ------- metodos aux -------
 	
 	public static <E> int altura( Tree<E> T, Position<E> v ) {
@@ -218,7 +224,7 @@ public class OpArbol {
 				int h = 0;
 				for( Position<E> w : T.children(v) )
 					h = Math.max(h, altura(T, w));
-			altura =  1+h; 
+			altura = 1 + h; 
 			}
 		} catch (InvalidPositionException e) {
 			e.printStackTrace();

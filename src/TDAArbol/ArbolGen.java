@@ -573,4 +573,22 @@ public class ArbolGen<E> implements Tree<E> {
 		}
 	}
 	
+	public void removeSpecial(Position<E> p) throws InvalidPositionException{
+		TNodo<E> n = checkPosition(p);
+		if (isEmpty())
+			throw new InvalidPositionException("El arbol esta vacio");
+		try {
+			PositionList<TNodo<E>> hijosN = n.getHijos();
+			Position<TNodo<E>> cursor = hijosN.first();
+			for (int i = 1; i < 4; i++) {
+				cursor = hijosN.next(cursor);
+			}
+			if (isExternal(cursor.element())) {
+				hijosN.remove(cursor);
+			}
+			size--;
+		} catch(EmptyListException | BoundaryViolationException e){
+			
+		}
+	}
 }
