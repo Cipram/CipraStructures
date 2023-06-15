@@ -1,4 +1,4 @@
-package TDALista;
+package Interfaces;
 
 import java.util.Iterator;
 

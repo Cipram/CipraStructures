@@ -16,12 +16,12 @@ import java.util.Random;
 
 import java.util.*;
 
-import TDAMapeo.Entry;
-import TDAMapeo.Map;
 import org.junit.Before;
 import org.junit.Test;
 
 import Exceptions.*;
+import Interfaces.Entry;
+import Interfaces.Map;
 
 
 public class MapTest {

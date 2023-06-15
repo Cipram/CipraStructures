@@ -3,7 +3,7 @@ package TDABinaryTree;
 import Exceptions.EmptyTreeException;
 import Exceptions.InvalidOperationException;
 import Exceptions.InvalidPositionException;
-import TDALista.Position;
+import Interfaces.Position;
 
 public class Tester {
 	

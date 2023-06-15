@@ -2,6 +2,9 @@ package TDABinaryTree;
 
 import TDACola.*;
 import Exceptions.*;
+import Interfaces.BinaryTree;
+import Interfaces.Position;
+import Interfaces.PositionList;
 import TDALista.*;
 
 public class OpAB {

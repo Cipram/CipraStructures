@@ -1,4 +1,4 @@
-package TDACola;
+package Interfaces;
 
 import Exceptions.EmptyQueueException;
 

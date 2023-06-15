@@ -9,6 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Exceptions.*;
+import Interfaces.Position;
+import Interfaces.PositionList;
+import Interfaces.Queue;
+import Interfaces.Tree;
 import TDACola.*;
 import TDALista.*;
 

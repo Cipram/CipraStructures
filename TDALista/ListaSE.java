@@ -1,6 +1,8 @@
 package TDALista;
  
 import Exceptions.*;
+import Interfaces.Position;
+import Interfaces.PositionList;
 
 import java.util.Iterator;
 

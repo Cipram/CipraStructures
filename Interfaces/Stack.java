@@ -1,4 +1,4 @@
-package TDAPila;
+package Interfaces;
 
 import Exceptions.EmptyStackException;
 

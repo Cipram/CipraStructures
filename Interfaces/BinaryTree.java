@@ -1,7 +1,6 @@
-package TDABinaryTree;
+package Interfaces;
 
 import Exceptions.*;
-import TDALista.Position;
 
 /**
  * Interface BinaryTree

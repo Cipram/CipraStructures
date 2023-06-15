@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Exceptions.*;
+import Interfaces.BinaryTree;
+import Interfaces.Position;
 import TDAArbol.*;
 import TDALista.*;
 

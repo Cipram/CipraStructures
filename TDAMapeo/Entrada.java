@@ -1,5 +1,6 @@
 package TDAMapeo;
 
+import Interfaces.Entry;
 
 public class Entrada<K,V> implements Entry<K,V> {
 	protected K key;

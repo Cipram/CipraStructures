@@ -1,4 +1,4 @@
-package TDAMapeo;
+package Interfaces;
 
 /**
  * Interface Entry

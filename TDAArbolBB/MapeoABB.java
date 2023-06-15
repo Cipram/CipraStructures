@@ -3,8 +3,10 @@ package TDAArbolBB;
 import java.util.Comparator;
 
 import Exceptions.InvalidKeyException;
+import Interfaces.Entry;
+import Interfaces.Map;
+import Interfaces.PositionList;
 import TDALista.ListaDE;
-import TDALista.PositionList;
 import TDAMapeo.*;
 
 public class MapeoABB<K,V> implements Map<K,V> {

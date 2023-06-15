@@ -3,6 +3,8 @@ package TDALista;
 import java.util.*;
 
 import Exceptions.*;
+import Interfaces.Position;
+import Interfaces.PositionList;
 
 /**
  * @class Clase ElementIterator

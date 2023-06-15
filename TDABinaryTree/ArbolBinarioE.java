@@ -3,11 +3,13 @@ package TDABinaryTree;
 import java.util.Iterator;
 
 import Exceptions.*;
+import Interfaces.BTPosition;
+import Interfaces.BinaryTree;
+import Interfaces.Position;
+import Interfaces.PositionList;
 import TDAArbol.TNodo;
 import TDACola.ColaEnlazada;
 import TDALista.ListaDE;
-import TDALista.Position;
-import TDALista.PositionList;
 
 public class ArbolBinarioE<E> implements BinaryTree<E> {
 

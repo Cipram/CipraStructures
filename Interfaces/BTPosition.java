@@ -1,6 +1,4 @@
-package TDABinaryTree;
-
-import TDALista.Position;
+package Interfaces;
 
 public interface BTPosition<E> extends Position<E> {
 	

@@ -2,6 +2,10 @@ package TDAMapeo;
 
 import Exceptions.InvalidKeyException;
 import Exceptions.InvalidPositionException;
+import Interfaces.Entry;
+import Interfaces.Map;
+import Interfaces.Position;
+import Interfaces.PositionList;
 import TDALista.*; 
 
 

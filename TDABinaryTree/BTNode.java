@@ -1,5 +1,7 @@
 package TDABinaryTree;
 
+import Interfaces.BTPosition;
+
 public class BTNode<E> implements BTPosition<E> {
 	
 	private E element;

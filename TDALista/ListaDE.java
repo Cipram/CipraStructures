@@ -3,6 +3,8 @@ package TDALista;
 import java.util.Iterator;
 
 import Exceptions.*;
+import Interfaces.Position;
+import Interfaces.PositionList;
 
 public class ListaDE<E> implements PositionList<E> {	
 	protected Nodo<E> header;

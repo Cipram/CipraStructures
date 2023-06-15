@@ -1,6 +1,7 @@
 package TDAPila;
 
 import Exceptions.*;
+import Interfaces.Stack;
 
 public class PilaConEnlaces<E> implements Stack<E>{
 	protected NodoP<E> Head;

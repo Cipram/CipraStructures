@@ -1,9 +1,8 @@
-package TDAArbol;
+package Interfaces;
 
 import java.util.Iterator;
 
 import Exceptions.*;
-import TDALista.Position;
 
 /**
  * Interface Tree
@@ -12,7 +11,7 @@ import TDALista.Position;
  * @author C�tedra de Estructuras de Datos, Departamento de Cs. e Ing. de la Computaci�n, UNS.
  */
 
-public interface Tree<E> extends Iterable<E>
+public interface GTTree<E> extends Iterable<E>
 {
 	/**
 	 * Consulta la cantidad de nodos en el �rbol.
@@ -28,6 +27,7 @@ public interface Tree<E> extends Iterable<E>
 	
 	/**
 	 * Devuelve un iterador de los elementos almacenados en el �rbol en preorden.
+	 *
 	 * @return Iterador de los elementos almacenados en el �rbol.
 	 */
 	public Iterator<E> iterator();
@@ -97,73 +97,8 @@ public interface Tree<E> extends Iterable<E>
 	
 	/**
 	 * Crea un nodo con r�tulo e como ra�z del �rbol.
-	 * @param E R�tulo que se asignar� a la ra�z del �rbol.
+	 * @param e R�tulo que se asignar� a la ra�z del �rbol.
 	 * @throws InvalidOperationException si el �rbol ya tiene un nodo ra�z.
 	 */
-	public void createRoot(E e) throws InvalidOperationException;
-	
-	/**
-	 * Agrega un nodo con r�tulo e como primer hijo de un nodo dado.
-	 * @param e R�tulo del nuevo nodo.
-	 * @param padre Posici�n del nodo padre.
-	 * @return La posici�n del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida o el �rbol est� vac�o.
-	 */
-	public Position<E> addFirstChild(Position<E> p, E e) throws	InvalidPositionException;
-	
-	/**
-	 * Agrega un nodo con r�tulo e como �timo hijo de un nodo dado.
-	 * @param e R�tulo del nuevo nodo.
-	 * @param p Posici�n del nodo padre.
-	 * @return La posici�n del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida o el �rbol est� vac�o.
-	 */
-	public Position<E> addLastChild(Position<E> p, E e) throws InvalidPositionException;
-	
-	/**
-	 * Agrega un nodo con r�tulo e como hijo de un nodo padre dado. El nuevo nodo se agregar� delante de otro nodo tambi�n dado.
-	 * @param e R�tulo del nuevo nodo.
-	 * @param p Posici�n del nodo padre.
-	 * @param rb Posici�n del nodo que ser� el hermano derecho del nuevo nodo.
-	 * @return La posici�n del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida, o el �rbol est� vac�o, o la posici�n rb no corresponde a un nodo hijo del nodo referenciado por p.
-	 */
-	public Position<E> addBefore(Position<E> p, Position<E> rb, E e) throws InvalidPositionException;
-	
-	/**
-	 * Agrega un nodo con r�tulo e como hijo de un nodo padre dado. El nuevo nodo se agregar� a continuaci�n de otro nodo tambi�n dado.
-	 * @param e R�tulo del nuevo nodo.
-	 * @param p Posici�n del nodo padre.
-	 * @param lb Posici�n del nodo que ser� el hermano izquierdo del nuevo nodo.
-	 * @return La posici�n del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida, o el �rbol est� vac�o, o la posici�n lb no corresponde a un nodo hijo del nodo referenciado por p.
-	 */
-	public Position<E> addAfter (Position<E> p, Position<E> lb, E e) throws InvalidPositionException;
-	
-	/**
-	 * Elimina el nodo referenciado por una posici�n dada, si se trata de un nodo externo. 
-	 * @param n Posici�n del nodo a eliminar.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida o no corresponde a un nodo externo, o el �rbol est� vac�o.
-	 */
-	public void removeExternalNode (Position<E> p) throws InvalidPositionException;
-	
-	/**
-	 * Elimina el nodo referenciado por una posici�n dada, si se trata de un nodo interno. Los hijos del nodo eliminado lo reemplazan en el mismo orden en el que aparecen. 
-	 * Si el nodo a eliminar es la ra�z del �rbol,  �nicamente podr� ser eliminado si tiene un solo hijo, el cual lo reemplazar�.
-	 * @param n Posici�n del nodo a eliminar.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida o no corresponde a un nodo interno o corresponde a la ra�z (con m�s de un hijo), o el �rbol est� vac�o.
-	 */
-	public void removeInternalNode (Position<E> p) throws InvalidPositionException;
-	
-	/**
-	 * Elimina el nodo referenciado por una posici�n dada. Si se trata de un nodo interno. Los hijos del nodo eliminado lo reemplazan en el mismo orden en el que aparecen. 
-	 * Si el nodo a eliminar es la ra�z del �rbol,  �nicamente podr� ser eliminado si tiene un solo hijo, el cual lo reemplazar�.
-	 * @param n Posici�n del nodo a eliminar.
-	 * @throws InvalidPositionException si la posici�n pasada por par�metro es inv�lida o corresponde a la ra�z (con m�s de un hijo), o el �rbol est� vac�o.
-	 */
-	public void removeNode (Position<E> p) throws InvalidPositionException;
-	
-	
-	
-
+	public Position<E> createRoot(E e) throws InvalidOperationException;
 }

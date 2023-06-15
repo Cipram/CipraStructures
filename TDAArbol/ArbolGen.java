@@ -3,6 +3,9 @@ package TDAArbol;
 import java.util.Iterator;
 
 import Exceptions.*;
+import Interfaces.Position;
+import Interfaces.PositionList;
+import Interfaces.Tree;
 import TDACola.ColaEnlazada;
 import TDALista.*;
 import TDAPila.PilaConEnlaces;

@@ -1,6 +1,7 @@
 package TDACola;
 
 import Exceptions.*;
+import Interfaces.Queue;
 
 public class ArrayQueue <E> implements Queue<E>{
 	protected E [] arreglo;

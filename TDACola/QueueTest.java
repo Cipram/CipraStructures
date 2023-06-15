@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.*;
 
 import Exceptions.EmptyQueueException;
+import Interfaces.Queue;
 
 
 public class QueueTest {

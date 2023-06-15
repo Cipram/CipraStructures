@@ -1,4 +1,4 @@
-package TDAMapeo;
+package Interfaces;
 
 import Exceptions.InvalidKeyException;
 
