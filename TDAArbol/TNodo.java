@@ -1,5 +1,7 @@
 package TDAArbol;
 
+import Interfaces.Position;
+import Interfaces.PositionList;
 import TDALista.*;
 
 public class TNodo<E> implements Position<E>{

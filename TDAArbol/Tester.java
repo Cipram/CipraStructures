@@ -1,7 +1,7 @@
 package TDAArbol;
 
 import Exceptions.*;
-import TDALista.PositionList;
+import Interfaces.PositionList;
 
 public class Tester {
 	public static void main(String args[]) {

@@ -1,9 +1,10 @@
 package TDAArbol;
 
 import Exceptions.*;
+import Interfaces.Position;
+import Interfaces.PositionList;
+import Interfaces.Tree;
 import TDALista.ListaDE;
-import TDALista.Position;
-import TDALista.PositionList;
 
 public class OpArbol {
 

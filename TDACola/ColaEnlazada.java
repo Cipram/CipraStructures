@@ -1,6 +1,7 @@
 package TDACola;
 
 import Exceptions.EmptyQueueException;
+import Interfaces.Queue;
 
 public class ColaEnlazada<E> implements Queue<E> {
     protected NodoP<E> head, tail;
