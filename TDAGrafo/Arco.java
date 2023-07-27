@@ -1,6 +1,8 @@
 package TDAGrafo;
 
+import Exceptions.InvalidKeyException;
 import Interfaces.Edge;
+import Interfaces.Entry;
 import Interfaces.Position;
 
 public class Arco<V,E> implements Edge<E>{
@@ -63,6 +65,54 @@ public class Arco<V,E> implements Edge<E>{
 	@Override
 	public E element() {
 		return rotulo;
+	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Object get(Object key) throws InvalidKeyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object put(Object key, Object value) throws InvalidKeyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object remove(Object key) throws InvalidKeyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<Object> keys() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<Object> values() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterable<Entry<Object, Object>> entries() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

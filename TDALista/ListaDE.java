@@ -135,7 +135,7 @@ public class ListaDE<E> implements PositionList<E> {
 			} 
 		return p;
     }
-	 
+	
 	private Nodo<E> checkPosition(Position<E> p) throws InvalidPositionException {
 		try {
 			if( p == null )

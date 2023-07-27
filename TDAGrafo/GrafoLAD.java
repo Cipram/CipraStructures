@@ -3,7 +3,9 @@ package TDAGrafo;
 import java.util.Iterator;
 
 import Exceptions.EmptyListException;
+import Exceptions.EmptyQueueException;
 import Exceptions.InvalidEdgeException;
+import Exceptions.InvalidKeyException;
 import Exceptions.InvalidPositionException;
 import Exceptions.InvalidVertexException;
 import Interfaces.Edge;
@@ -11,13 +13,18 @@ import Interfaces.Graph;
 import Interfaces.Position;
 import Interfaces.PositionList;
 import Interfaces.Vertex;
+import TDACola.ColaEnlazada;
 import TDALista.ListaDE;
 
-public class GrafoListaAD<V,E> implements Graph<V,E>{
+public class GrafoLAD<V,E> implements Graph<V,E>{
+	private final static Object VISITADO = new Object();
+	private final static Object NOVISITADO = new Object();
+	private final static Object ESTADO = new Object();
+	
 	private PositionList<Vertice<V,E>> vertices;
 	private PositionList<Arco<V,E>> arcos;
 	
-	public GrafoListaAD() {
+	public GrafoLAD() {
 		vertices = new ListaDE<Vertice<V,E>>();
 		arcos = new ListaDE<Arco<V,E>>();
 	}
@@ -184,4 +191,72 @@ public class GrafoListaAD<V,E> implements Graph<V,E>{
 		return toRet;
 	}
 
+	//----- ej 3 a)ii) -----
+	
+	public void shellDfs() {
+		try {
+			for (Vertex<V> v : vertices()) {
+				v.put(ESTADO, NOVISITADO);
+			}
+			for (Vertex<V> v : vertices()) {
+				if (v.get(ESTADO) == NOVISITADO)
+					dfs(v);
+			}
+		} catch (InvalidKeyException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void dfs(Vertex<V> v) {
+		System.out.println(v.element());
+		try {
+			v.put(ESTADO, VISITADO);
+			Iterable<Edge<E>> ad = incidentEdges(v);
+			for (Edge<E> e : ad) {
+				Vertex<V> w = opposite(v, e);
+				if (w.get(ESTADO) == NOVISITADO) {
+					dfs(w);
+				}
+			}
+		} catch (InvalidKeyException | InvalidVertexException | InvalidEdgeException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	//----- ej 4 a)i) -----
+	
+	public void shellBfs() {
+		try {
+			for (Vertex<V> v : vertices()) {
+				v.put(ESTADO, NOVISITADO);
+			}
+			for (Vertex<V> v : vertices()) {
+				if (v.get(ESTADO) == NOVISITADO)
+					bfs(v);
+			}
+		} catch (InvalidKeyException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void bfs(Vertex<V> v) {
+		ColaEnlazada<Vertex<V>> cola = new ColaEnlazada<Vertex<V>>();
+		cola.enqueue(v);
+		Vertex<V> u;
+		try {
+			v.put(ESTADO, VISITADO);
+			while(!cola.isEmpty()) {
+				u = cola.dequeue();
+				System.out.println(u.element());
+				for (Vertex<V> w : vertices()) {
+					if (w.get(ESTADO) == NOVISITADO) {
+						w.put(ESTADO, VISITADO);
+						cola.enqueue(w);
+					}
+				}
+			}
+		} catch (InvalidKeyException | EmptyQueueException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 }
