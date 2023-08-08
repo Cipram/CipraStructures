@@ -3,7 +3,6 @@ package TDAGrafo;
 import Exceptions.EmptyQueueException;
 import Exceptions.InvalidVertexException;
 import Interfaces.*;
-import TDAArbolBB.OPArbolBB;
 import TDACola.ColaEnlazada;
 import TDALista.ListaDE;
 
