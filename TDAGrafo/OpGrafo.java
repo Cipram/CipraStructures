@@ -160,12 +160,10 @@ public class OpGrafo {
 	
 	@SuppressWarnings({ "hiding", "unused" })
 	private static <V,Integer> void CaminoMin(GraphD<V,Integer> g, Vertex<V> a, Vertex<V> b, ListaDE<Vertex<V>> camMin, ListaDE<Vertex<V>> camAct) {
-//		boolean encontre = false;
 		try {
 			a.put(ESTADO, VISITADO);
 			camAct.addLast(a);
 			if (a == b) {
-//				encontre = true;
 				if (camMin.isEmpty() || camAct.size() <= camMin.size()) {
 					camMin = OpGrafo.cloneLista(camAct);
 				}
@@ -174,8 +172,6 @@ public class OpGrafo {
 				ListaDE<Vertex<V>> aux = OpGrafo.cloneLista(camAct);
 				Iterable<Edge<Integer>> adyacentes = g.succesorEdges(a);
 				for (Edge<Integer> e : adyacentes) {
-					//camAct = OpGrafo.cloneLista(aux); //una vez que recorrio el camino de un vertice, costoAct vuelve a su valor original
-//					encontre = false;
 					Vertex<V> w = g.opposite(a, e);
 					if(w.get(ESTADO) == NOVISITADO) {
 						CaminoMin(g,w,b,camMin,camAct);

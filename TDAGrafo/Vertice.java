@@ -64,6 +64,7 @@ public class Vertice<V,E> extends MapeoHashCerrado<Object,Object> implements Ver
 		return ret;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object put(Object key, Object value) throws InvalidKeyException {
 		Object ret = null;

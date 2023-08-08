@@ -35,10 +35,12 @@ public class Arco<V,E> implements Edge<E>{
 		posicionV2 = p;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setV1(Vertice v) {
 		v1 = v;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setV2(Vertice v) {
 		v2 = v;
 	}

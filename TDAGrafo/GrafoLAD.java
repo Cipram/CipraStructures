@@ -71,6 +71,7 @@ public class GrafoLAD<V,E> implements Graph<V,E>{
 		return ret;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Vertex<V>[] endvertices(Edge<E> e) throws InvalidEdgeException {
 		Arco<V,E> a = checkEdge(e);

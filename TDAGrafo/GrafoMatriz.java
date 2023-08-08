@@ -162,6 +162,7 @@ public class GrafoMatriz<E,V> implements Graph<V,E>{
 		return ret;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void reMatrix() {
 		int size = cantVertices * 2;
 		Edge<E> [][] arreglo = new ArcoMat[size][size];
