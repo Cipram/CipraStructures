@@ -11,10 +11,12 @@ import Exceptions.InvalidVertexException;
 import Interfaces.Edge;
 import Interfaces.Graph;
 import Interfaces.GraphD;
+import Interfaces.Map;
 import Interfaces.Position;
 import Interfaces.Vertex;
 import TDACola.ColaEnlazada;
 import TDALista.ListaDE;
+import TDAMapeo.MapeoConLista;
 
 public class OpGrafo {
 	
@@ -545,5 +547,53 @@ public class OpGrafo {
 			cola.enqueue(k);
 			floydCamino(mat,k,j,cola);
 		}
+	}
+	
+	public static <V,Double> Map<Float,Vertex<V>> Dijkstra(Graph<V,Double> g,Vertex<V> a){
+		MapeoConLista<Vertex<V>,Double> Dist = new MapeoConLista<Vertex<V>,Double>();
+		MapeoConLista<Vertex<V>,Vertex<V>> Post = new MapeoConLista<Vertex<V>,Vertex<V>>();
+		int contador = 0;
+		for (Vertex<V> v : g.vertices()) {
+			contador++;
+			Dist.put(v,);
+			Post.put(v,null);
+			v.put(ESTADO, NOVISITADO);
+		}
+		Dist.put(a,0.F);
+		for (int i = 0; i < contador;i++) {
+			Vertex<V> u = MasProx(g,a);
+			u.put(ESTADO, VISITADO);
+			Iterable<Edge<Double>> adyacentes = g.incidentEdges(u);
+			for (Edge<Double> e : adyacentes) {
+				Vertex<V> v = g.opposite(u, e);
+				double suma = (double)Dist.get(u) + (double)e.element();
+				if (suma < (float) Dist.get(u)) {
+					Dist.put(v,suma);
+					Post.put(v,u);
+				}
+			}
+		}
+		return null;
+	}
+	
+	private static <V,Float> Vertex<V> MasProx(Graph<V,Float> g, Vertex<V> v){
+		Iterable<Edge<Float>> adyacentes;
+		Vertex<V> ret = null;
+		float min = 1000;
+		float aux;
+		try {
+			adyacentes = g.incidentEdges(v);
+			for (Edge<Float> e : adyacentes) {
+				Vertex<V> w = g.opposite(v, e);
+				aux = (float) e.element();
+				if (aux < min) {
+					min = aux;
+					ret = w;
+				}
+			}
+		} catch (InvalidVertexException | InvalidEdgeException e) {
+			System.out.println(e.getMessage());
+		}
+		return ret;
 	}
 }
